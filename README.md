@@ -9,7 +9,7 @@ Use at your own risk.
 Users are welcome to use, modify, or explore the code for educational purposes.
 Redistribution is allowed, but the author assumes no responsibility for any consequences.
 
-This addon is designed for WoW Classic 1.12.1. Compatibility with other versions is not guaranteed.
+This addon is designed for WoW Vanilla 1.12.1. Compatibility with other versions or custom servers is not guaranteed.
 
 # Customize it!
 
