@@ -1,10 +1,11 @@
 ## Interface: 11200
 ## Title: DialogUI
 ## Author: Sxus
-## Version: 1.0.2
+## Version: 1.0.3
 ## DefaultState: Enabled
 ## LoadOnDemand: 0
 ## Notes: Addon made for an immersive questing experience in vanilla client, consider it a Vanilla+ frame.
+## SavedVariables: DialogUIDB
 
 # Fonts used for the frames
 src\assets\font\fonts.xml
@@ -30,3 +31,6 @@ src\frames\gossipFrame\gossip.frame.xml
 src\frames\questFrame\quest.frame.lua
 src\frames\questFrame\quest.frame.template.xml
 src\frames\questFrame\quest.frame.xml
+
+# Position management and slash commands
+src\dialogUI.lua
