@@ -1289,6 +1289,7 @@
         <Scripts>
             <OnLoad>
                 DQuestFrame_OnLoad();
+                this:RegisterForDrag("LeftButton");
             </OnLoad>
             <OnEvent>
                 DQuestFrame_OnEvent(event);
@@ -1302,6 +1303,12 @@
             <OnMouseWheel>
                 return;
             </OnMouseWheel>
+            <OnDragStart>
+                this:StartMoving();
+            </OnDragStart>
+            <OnDragStop>
+                DialogUI_OnFrameDragStop(this);
+            </OnDragStop>
         </Scripts>
     </Frame>
 </Ui>

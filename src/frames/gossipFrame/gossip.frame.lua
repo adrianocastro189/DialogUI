@@ -16,7 +16,7 @@ function SetFontColor(fontObject, key)
     fontObject:SetTextColor(color[1], color[2], color[3]);
 end
 
-function HideDefaultFrames()
+function HideDefaultGossipFrames()
     GossipFrameGreetingPanel:Hide()
     GossipNpcNameFrame:Hide()
     GossipFrameCloseButton:Hide()
@@ -26,7 +26,13 @@ end
 
 
 function DGossipFrame_OnLoad()
-    HideDefaultFrames()
+    HideDefaultGossipFrames()
+    -- Make GossipFrameCloseButton permanently invisible and non-interactive.
+    -- Setting alpha=0 persists across WoW's own Show() calls, so the button
+    -- remains hidden even when Blizzard's event handlers re-show GossipFrame.
+    GossipFrameCloseButton:SetAlpha(0);
+    GossipFrameCloseButton:EnableMouse(false);
+    this:RegisterForDrag("LeftButton")
     this:RegisterEvent("GOSSIP_SHOW");
     this:RegisterEvent("GOSSIP_CLOSED");
     
@@ -43,6 +49,7 @@ end
 
 function DGossipFrame_OnEvent()
     if (event == "GOSSIP_SHOW") then
+        HideDefaultGossipFrames();
         if (not DGossipFrame:IsVisible()) then
             ShowUIPanel(DGossipFrame);
             if (not DGossipFrame:IsVisible()) then
