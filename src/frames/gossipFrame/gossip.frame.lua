@@ -27,6 +27,9 @@ end
 
 function DGossipFrame_OnLoad()
     HideDefaultGossipFrames()
+    -- Permanently prevent the default WoW gossip close button from showing,
+    -- since WoW's own event handlers may re-show it after our hide calls.
+    GossipFrameCloseButton:SetScript("OnShow", function() this:Hide() end)
     this:RegisterForDrag("LeftButton")
     this:RegisterEvent("GOSSIP_SHOW");
     this:RegisterEvent("GOSSIP_CLOSED");

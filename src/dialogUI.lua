@@ -5,13 +5,14 @@
 -- ==========================================
 
 -- Apply saved (x, y) position to both main frames.
--- x and y are offsets from UIParent's TOPLEFT anchor (x positive right, y negative down).
+-- x = left edge distance from screen left; y = top edge distance from screen bottom.
+-- Both values come directly from GetLeft()/GetTop() so we restore via BOTTOMLEFT anchor.
 local function DialogUI_ApplySavedPosition()
     local frames = { DQuestFrame, DGossipFrame };
     for _, frame in ipairs(frames) do
         frame:ClearAllPoints();
         if DialogUIDB.x and DialogUIDB.y then
-            frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DialogUIDB.x, DialogUIDB.y);
+            frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", DialogUIDB.x, DialogUIDB.y);
         else
             frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
         end
@@ -21,8 +22,11 @@ end
 -- Called when a frame is dragged; saves position and syncs the other frame.
 function DialogUI_OnFrameDragStop(movedFrame)
     movedFrame:StopMovingOrSizing();
+    -- GetLeft() = x from screen left; GetTop() = y of top edge from screen bottom.
+    -- Store raw screen coordinates so restore via BOTTOMLEFT works without needing
+    -- UIParent:GetHeight(), which can return inconsistent values in vanilla 1.12.1.
     local x = movedFrame:GetLeft();
-    local y = movedFrame:GetTop() - UIParent:GetHeight();
+    local y = movedFrame:GetTop();
     DialogUIDB.x = x;
     DialogUIDB.y = y;
     local otherFrame;
@@ -32,7 +36,7 @@ function DialogUI_OnFrameDragStop(movedFrame)
         otherFrame = DGossipFrame;
     end
     otherFrame:ClearAllPoints();
-    otherFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y);
+    otherFrame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", x, y);
 end
 
 -- Initialise saved-variables and apply the saved (or default) position
