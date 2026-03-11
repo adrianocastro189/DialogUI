@@ -7,13 +7,17 @@
 -- Apply saved (x, y) position to both main frames.
 -- x = left edge distance from screen left; y = top edge distance from screen bottom.
 -- Both values come directly from GetLeft()/GetTop() so we restore via BOTTOMLEFT anchor.
+-- y must be positive (> 0); a negative or zero value indicates stale data from an older
+-- coordinate system and will be discarded so the frame defaults to centered.
 local function DialogUI_ApplySavedPosition()
     local frames = { DQuestFrame, DGossipFrame };
     for _, frame in ipairs(frames) do
         frame:ClearAllPoints();
-        if DialogUIDB.x and DialogUIDB.y then
+        if DialogUIDB.x and DialogUIDB.y and DialogUIDB.y > 0 then
             frame:SetPoint("TOPLEFT", UIParent, "BOTTOMLEFT", DialogUIDB.x, DialogUIDB.y);
         else
+            DialogUIDB.x = nil;
+            DialogUIDB.y = nil;
             frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
         end
     end
