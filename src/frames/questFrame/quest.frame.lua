@@ -28,7 +28,7 @@ function DQuestFrame_OnLoad()
     this:RegisterEvent("QUEST_ITEM_UPDATE");
 end
 
-function HideDefaultFrames()
+function HideDefaultQuestFrames()
     QuestFrameGreetingPanel:Hide()
     QuestFrameDetailPanel:Hide()
     QuestFrameProgressPanel:Hide()
@@ -46,7 +46,8 @@ function DQuestFrame_OnEvent(event)
         return;
     end
 
-    HideDefaultFrames();
+    HideDefaultQuestFrames();
+    HideDefaultGossipFrames();
     DQuestFrame_SetPortrait();
     ShowUIPanel(DQuestFrame);
     if (not DQuestFrame:IsVisible()) then
@@ -95,7 +96,7 @@ function DQuestFrameRewardPanel_OnShow()
     DQuestFrameDetailPanel:Hide();
     DQuestFrameGreetingPanel:Hide();
     DQuestFrameProgressPanel:Hide();
-    HideDefaultFrames();
+    HideDefaultQuestFrames();
     DQuestFrameNpcNameText:SetText(GetTitleText());
     DQuestRewardText:SetText(GetRewardText());
     SetFontColor(DQuestFrameNpcNameText, "DarkBrown");
@@ -166,7 +167,7 @@ function DQuestFrameProgressPanel_OnShow()
     DQuestFrameRewardPanel:Hide();
     DQuestFrameDetailPanel:Hide();
     DQuestFrameGreetingPanel:Hide();
-    HideDefaultFrames();
+    HideDefaultQuestFrames();
     DQuestFrameNpcNameText:SetText(GetTitleText());
     DQuestProgressText:SetText(GetProgressText());
     SetFontColor(DQuestFrameNpcNameText, "DarkBrown");
@@ -624,7 +625,7 @@ function DQuestFrameDetailPanel_OnShow()
     DQuestFrameRewardPanel:Hide();
     DQuestFrameProgressPanel:Hide();
     DQuestFrameGreetingPanel:Hide();
-    HideDefaultFrames();
+    HideDefaultQuestFrames();
     DQuestFrameNpcNameText:SetText(GetTitleText());
     DQuestDescription:SetText(GetQuestText());
     DQuestObjectiveText:SetText(GetObjectiveText());

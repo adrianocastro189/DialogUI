@@ -4,19 +4,35 @@
 -- DialogUI - Frame Position Management
 -- ==========================================
 
-local DEFAULT_POSITION = "center";
-
--- Apply the given position ("center" or "default") to the main frames.
-function DialogUI_ApplyPosition(position)
+-- Apply saved (x, y) position to both main frames.
+-- x and y are offsets from UIParent's TOPLEFT anchor (x positive right, y negative down).
+local function DialogUI_ApplySavedPosition()
     local frames = { DQuestFrame, DGossipFrame };
     for _, frame in ipairs(frames) do
         frame:ClearAllPoints();
-        if position == "center" then
-            frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
+        if DialogUIDB.x and DialogUIDB.y then
+            frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", DialogUIDB.x, DialogUIDB.y);
         else
-            frame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", 0, -104);
+            frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0);
         end
     end
+end
+
+-- Called when a frame is dragged; saves position and syncs the other frame.
+function DialogUI_OnFrameDragStop(movedFrame)
+    movedFrame:StopMovingOrSizing();
+    local x = movedFrame:GetLeft();
+    local y = movedFrame:GetTop() - UIParent:GetHeight();
+    DialogUIDB.x = x;
+    DialogUIDB.y = y;
+    local otherFrame;
+    if movedFrame == DGossipFrame then
+        otherFrame = DQuestFrame;
+    else
+        otherFrame = DGossipFrame;
+    end
+    otherFrame:ClearAllPoints();
+    otherFrame:SetPoint("TOPLEFT", UIParent, "TOPLEFT", x, y);
 end
 
 -- Initialise saved-variables and apply the saved (or default) position
@@ -27,25 +43,5 @@ dialogUIFrame:SetScript("OnEvent", function()
     if not DialogUIDB then
         DialogUIDB = {};
     end
-    if not DialogUIDB.position then
-        DialogUIDB.position = DEFAULT_POSITION;
-    end
-    DialogUI_ApplyPosition(DialogUIDB.position);
+    DialogUI_ApplySavedPosition();
 end);
-
--- Slash command: /dialogui center | /dialogui default
-SLASH_DIALOGUI1 = "/dialogui";
-SlashCmdList["DIALOGUI"] = function(msg)
-    local cmd = string.lower(msg or "");
-    if cmd == "center" then
-        DialogUIDB.position = "center";
-        DialogUI_ApplyPosition("center");
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00ff00DialogUI:|r Frames centered.");
-    elseif cmd == "default" then
-        DialogUIDB.position = "default";
-        DialogUI_ApplyPosition("default");
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00ff00DialogUI:|r Frames restored to default position.");
-    else
-        DEFAULT_CHAT_FRAME:AddMessage("|cff00ff00DialogUI:|r Usage: /dialogui [center|default]");
-    end
-end;
