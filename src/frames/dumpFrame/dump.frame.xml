@@ -1,6 +1,4 @@
 <Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <Script file="src\frames\dumpFrame\dump.frame.lua" />
-
     <!--
         Conversation-history dump frame.
         Opens centred on screen when the player runs /dialogui dump.

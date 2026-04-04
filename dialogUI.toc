@@ -33,6 +33,7 @@ src\frames\questFrame\quest.frame.template.xml
 src\frames\questFrame\quest.frame.xml
 
 # Conversation history dump frame
+src\frames\dumpFrame\dump.frame.lua
 src\frames\dumpFrame\dump.frame.xml
 
 # Position management and slash commands
