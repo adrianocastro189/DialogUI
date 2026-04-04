@@ -74,13 +74,15 @@ function DialogUI_AddToHistory(npcName, gossipText)
     });
 end
 
--- /dialogui dump  – prints every recorded conversation to chat, then wipes the log.
+-- /dialogui dump  – opens an on-screen text field with the full history so the
+-- player can select and copy it (Ctrl+A, Ctrl+C), then clears the log.
 SlashCmdList["DIALOGUI"] = function(msg)
     if msg == "dump" then
         if not DialogUIDB.history or getn(DialogUIDB.history) == 0 then
             DEFAULT_CHAT_FRAME:AddMessage("[DialogUI] No history to dump.");
             return;
         end
+        local lines = {};
         for i = 1, getn(DialogUIDB.history) do
             local entry = DialogUIDB.history[i];
             local location;
@@ -89,11 +91,12 @@ SlashCmdList["DIALOGUI"] = function(msg)
             else
                 location = entry.zone;
             end
-            DEFAULT_CHAT_FRAME:AddMessage(entry.npc .. ", " .. location);
-            DEFAULT_CHAT_FRAME:AddMessage("(" .. entry.text .. ")");
-            DEFAULT_CHAT_FRAME:AddMessage("----");
+            table.insert(lines, entry.npc .. ", " .. location);
+            table.insert(lines, "(" .. entry.text .. ")");
+            table.insert(lines, "----");
         end
         DialogUIDB.history = {};
+        DDialogUIDumpFrame_Show(table.concat(lines, "\n"));
     end
 end;
 SLASH_DIALOGUI1 = "/dialogui";
