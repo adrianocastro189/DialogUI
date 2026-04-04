@@ -92,7 +92,7 @@ SlashCmdList["DIALOGUI"] = function(msg)
                 location = entry.zone;
             end
             table.insert(lines, entry.npc .. ", " .. location);
-            table.insert(lines, "(" .. entry.text .. ")");
+            table.insert(lines, entry.text);
             table.insert(lines, "----");
         end
         DialogUIDB.history = {};
