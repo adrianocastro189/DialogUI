@@ -193,8 +193,10 @@ function DGossipFrameUpdate()
     ClearAllGossipIcons();
     DGossipFrame.buttonIndex = 1;
     totalGossipButtons = 0; -- Reset counter
-    
-    DGossipGreetingText:SetText(GetGossipText());
+
+    local gossipText = GetGossipText();
+    DGossipGreetingText:SetText(gossipText);
+    DialogUI_AddToHistory(UnitName("npc"), gossipText);
     DGossipFrameAvailableQuestsUpdate(GetGossipAvailableQuests());
     DGossipFrameActiveQuestsUpdate(GetGossipActiveQuests());
     DGossipFrameOptionsUpdate(GetGossipOptions());

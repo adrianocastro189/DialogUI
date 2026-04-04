@@ -1,0 +1,111 @@
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <!--
+        Conversation-history dump frame.
+        Opens centred on screen when the player runs /dialogui dump.
+        Contains a scrollable, focusable EditBox so the player can
+        select all (Ctrl+A) and copy (Ctrl+C) the text.
+    -->
+    <Frame name="DDialogUIDumpFrame" parent="UIParent" toplevel="true" hidden="true"
+           frameStrata="DIALOG" enableMouse="true" movable="true">
+        <Size x="520" y="450" />
+        <Anchors>
+            <Anchor point="CENTER" />
+        </Anchors>
+        <Backdrop bgFile="Interface\DialogFrame\UI-DialogBox-Background"
+                  edgeFile="Interface\DialogFrame\UI-DialogBox-Border" tile="true">
+            <TileSize><AbsValue val="32" /></TileSize>
+            <EdgeSize><AbsValue val="32" /></EdgeSize>
+            <BackgroundInsets><AbsInset left="11" right="12" top="12" bottom="11" /></BackgroundInsets>
+        </Backdrop>
+        <Layers>
+            <Layer level="ARTWORK">
+                <!-- Title -->
+                <FontString name="DDialogUIDumpTitle"
+                            font="Interface\AddOns\DialogUI\src\assets\font\frizqt___cyr.ttf"
+                            text="Conversation History" justifyH="CENTER">
+                    <FontHeight><AbsValue val="18" /></FontHeight>
+                    <Color r="0.87" g="0.86" b="0.75" />
+                    <Anchors>
+                        <Anchor point="TOP">
+                            <Offset><AbsDimension x="0" y="-16" /></Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+                <!-- Copy hint -->
+                <FontString name="DDialogUIDumpHint"
+                            font="Interface\AddOns\DialogUI\src\assets\font\ARIALN.ttf"
+                            text="Click the text field · Ctrl+A selects all · Ctrl+C copies · Esc closes"
+                            justifyH="CENTER">
+                    <FontHeight><AbsValue val="11" /></FontHeight>
+                    <Color r="0.6" g="0.6" b="0.6" />
+                    <Anchors>
+                        <Anchor point="BOTTOM">
+                            <Offset><AbsDimension x="0" y="12" /></Offset>
+                        </Anchor>
+                    </Anchors>
+                </FontString>
+            </Layer>
+        </Layers>
+        <Frames>
+            <!-- Close (×) button -->
+            <Button name="DDialogUIDumpCloseButton">
+                <Size x="32" y="32" />
+                <Anchors>
+                    <Anchor point="TOPRIGHT">
+                        <Offset><AbsDimension x="-4" y="-4" /></Offset>
+                    </Anchor>
+                </Anchors>
+                <NormalTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Up" />
+                <PushedTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Down" />
+                <HighlightTexture file="Interface\Buttons\UI-Panel-MinimizeButton-Highlight"
+                                  alphaMode="ADD" />
+                <Scripts>
+                    <OnClick>DDialogUIDumpFrame:Hide();</OnClick>
+                </Scripts>
+            </Button>
+
+            <!-- Scrollable text area (uses the addon's existing scroll template) -->
+            <ScrollFrame name="DDialogUIDumpScrollFrame"
+                         inherits="DUIPanelScrollFrameTemplate">
+                <Size x="462" y="360" />
+                <Anchors>
+                    <Anchor point="TOP">
+                        <Offset><AbsDimension x="-10" y="-52" /></Offset>
+                    </Anchor>
+                </Anchors>
+                <ScrollChild>
+                    <!--
+                        multiLine + autoFocus=false: text is shown but the box
+                        only grabs focus when the player clicks it, allowing
+                        normal Ctrl+A / Ctrl+C selection and copy.
+                    -->
+                    <EditBox name="DDialogUIDumpEditBox"
+                             multiLine="true" autoFocus="false" maxLetters="0">
+                        <Size x="450" y="60" />
+                        <!-- Ivory text on the dark dialog background -->
+                        <FontString inherits="DGameFontWhite" />
+                        <Scripts>
+                            <OnLoad>
+                                this:SetTextInsets(4, 4, 4, 4);
+                            </OnLoad>
+                            <OnEscapePressed>
+                                DDialogUIDumpFrame:Hide();
+                            </OnEscapePressed>
+                        </Scripts>
+                    </EditBox>
+                </ScrollChild>
+            </ScrollFrame>
+        </Frames>
+        <Scripts>
+            <OnLoad>
+                this:RegisterForDrag("LeftButton");
+            </OnLoad>
+            <OnDragStart>
+                this:StartMoving();
+            </OnDragStart>
+            <OnDragStop>
+                this:StopMovingOrSizing();
+            </OnDragStop>
+        </Scripts>
+    </Frame>
+</Ui>

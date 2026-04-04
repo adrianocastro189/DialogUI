@@ -55,12 +55,15 @@ function DQuestFrame_OnEvent(event)
         return;
     end
     if (event == "QUEST_GREETING") then
+        DialogUI_AddToHistory(UnitName("npc"), GetGreetingText());
         DQuestFrameGreetingPanel:Hide();
         DQuestFrameGreetingPanel:Show();
     elseif (event == "QUEST_DETAIL") then
+        DialogUI_AddToHistory(UnitName("npc"), GetQuestText());
         DQuestFrameDetailPanel:Hide();
         DQuestFrameDetailPanel:Show();
     elseif (event == "QUEST_PROGRESS") then
+        DialogUI_AddToHistory(UnitName("npc"), GetProgressText());
         DQuestFrameProgressPanel:Hide();
         DQuestFrameProgressPanel:Show();
     elseif (event == "QUEST_COMPLETE") then
