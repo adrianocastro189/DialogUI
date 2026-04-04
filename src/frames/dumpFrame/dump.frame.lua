@@ -14,7 +14,6 @@ function DDialogUIDumpFrame_Show(text)
 
     DDialogUIDumpScrollFrame:UpdateScrollChildRect();
     DDialogUIDumpScrollFrame:SetVerticalScroll(0);
-    DDialogUIDumpEditBox:SetCursorPosition(0);
     DDialogUIDumpFrame:Show();
     DDialogUIDumpEditBox:SetFocus();
 end
